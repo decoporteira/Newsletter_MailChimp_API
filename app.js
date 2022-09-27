@@ -1,4 +1,5 @@
 const mailchimp = require("@mailchimp/mailchimp_marketing");
+require('dotenv').config();
 
 
 const express = require("express");
@@ -18,25 +19,21 @@ app.listen(process.env.PORT||3000,function () {
 
 
 mailchimp.setConfig({
-  apiKey: "e57bbd097c1ece3a376a87f1595769c2-us13",
-  server: "us13",
+  apiKey: process.env.API_KEY,
+  server: process.env.SERVER
 });
 ////// tudo abaixo diso ////
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/signup.html");
 });
 
-mailchimp.setConfig({
-  apiKey: "e57bbd097c1ece3a376a87f1595769c2-us13",
-  server: "us13",
-});
 
 app.post("/", function(req,res) {
   const firstName = req.body.firstName;
   const secondName = req.body.secondName;
   const email = req.body.email;
 
-  const listId = "7a1bc4baf7";
+  const listId = process.env.LIST_ID;
 
   const subscribingUser = {
     firstName: firstName,
@@ -70,6 +67,3 @@ app.post("/", function(req,res) {
   app.post("/failure", function(req,res) {
     res.redirect("/")
   })
-
-
-
